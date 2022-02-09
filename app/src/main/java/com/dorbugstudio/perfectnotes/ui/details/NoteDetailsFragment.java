@@ -1,8 +1,10 @@
 package com.dorbugstudio.perfectnotes.ui.details;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,9 +15,14 @@ import com.dorbugstudio.perfectnotes.R;
 import com.dorbugstudio.perfectnotes.domain.Note;
 import com.dorbugstudio.perfectnotes.ui.list.NotesListFragment;
 
-import java.text.SimpleDateFormat;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-public class NoteDetailsFragment extends Fragment {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class NoteDetailsFragment extends Fragment implements
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final String ARG_NOTE = "ARG_NOTE";
     private TextView noteTitleTextView;
@@ -44,6 +51,9 @@ public class NoteDetailsFragment extends Fragment {
         noteCreatedDateTextView = view.findViewById(R.id.note_created_date);
         noteBodyTextView = view.findViewById(R.id.note_body);
 
+        view.findViewById(R.id.change_date_button)
+                .setOnClickListener(buttonView -> showDatePickerDialog());
+
         getParentFragmentManager()
                 .setFragmentResultListener(NotesListFragment.NOTE_SELECTED, getViewLifecycleOwner(), new FragmentResultListener() {
                     @Override
@@ -54,18 +64,58 @@ public class NoteDetailsFragment extends Fragment {
                     }
                 });
 
-        Bundle arguments = getArguments();
+        showNoteDetailsInfo(getCurrentNote());
+    }
 
+    private void showDatePickerDialog() {
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this);
+        datePickerDialog.setTitle(getString(R.string.datepicker_header));
+        datePickerDialog.show(getParentFragmentManager(), "DatePickerDialog");
+    }
+
+    private Note getCurrentNote() {
+        Note note = null;
+
+        Bundle arguments = getArguments();
         if ((arguments != null) && (arguments.containsKey(ARG_NOTE))) {
-            Note note = (Note) arguments.getSerializable(ARG_NOTE);
-            showNoteDetailsInfo(note);
+            note = (Note) arguments.getSerializable(ARG_NOTE);
+
         }
+
+        return note;
     }
 
     private void showNoteDetailsInfo(Note note) {
+        if (note == null) {
+            return;
+        }
+
         noteTitleTextView.setText(note.getTitle());
         noteCreatedDateTextView.setText(new SimpleDateFormat("dd-MM-yyyy").format(note.getDate()));
         noteBodyTextView.setText(note.getNoteBody());
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, true);
+        //timePickerDialog.setThemeDark(false);
+        //timePickerDialog.showYearPickerFirst(false);
+        timePickerDialog.setTitle("Time Picker");
+
+        timePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                showDatePickerDialog();
+            }
+        });
+
+        timePickerDialog.show(getParentFragmentManager(), "TimePickerDialog");
+    }
+
+    @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        Date date = new Date();
+        getCurrentNote().setDate(date);
     }
 }
 
