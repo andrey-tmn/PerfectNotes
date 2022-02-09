@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero_value">0dp</dimen>
+    <dimen name="note_titles_in_list_marginbottom">1dp</dimen>
+    <dimen name="note_titles_in_list_paddinghorizontal">15dp</dimen>
+    <dimen name="note_titles_in_list_paddingtop">10dp</dimen>
+    <dimen name="note_titles_in_list_paddingbottom">12dp</dimen>
+    <dimen name="note_titles_in_list_textsize">30sp</dimen>
+</resources>

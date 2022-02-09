@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="yellow_opacity_55">#55FFFF00</color>
+    <color name="gray_777">#777777</color>
+    <color name="note_details_background">#33FF0000</color>
 </resources>
