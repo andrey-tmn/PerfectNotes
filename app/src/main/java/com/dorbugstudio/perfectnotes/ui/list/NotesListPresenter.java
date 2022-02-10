@@ -1,6 +1,5 @@
 package com.dorbugstudio.perfectnotes.ui.list;
 
-
 import com.dorbugstudio.perfectnotes.domain.NotesRepository;
 import com.dorbugstudio.perfectnotes.domain.Note;
 

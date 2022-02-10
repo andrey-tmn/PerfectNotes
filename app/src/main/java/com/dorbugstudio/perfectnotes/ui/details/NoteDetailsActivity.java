@@ -8,16 +8,15 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dorbugstudio.perfectnotes.R;
-import com.dorbugstudio.perfectnotes.domain.Note;
 
 
 public class NoteDetailsActivity extends AppCompatActivity {
 
-    private static final String EXTRA_NOTE = "EXTRA_NOTE";
+    private static final String EXTRA_NOTE_ID = "EXTRA_NOTE_ID";
 
-    public static void show(Context context, Note note) {
+    public static void show(Context context, int noteId) {
         Intent intent = new Intent(context, NoteDetailsActivity.class);
-        intent.putExtra(EXTRA_NOTE, note);
+        intent.putExtra(EXTRA_NOTE_ID, noteId);
         context.startActivity(intent);
     }
 
@@ -28,12 +27,12 @@ public class NoteDetailsActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
 
-            Note note = (Note) getIntent().getSerializableExtra(EXTRA_NOTE);
+            int noteId = getIntent().getIntExtra(EXTRA_NOTE_ID, 0);
 
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container_list,
-                            NoteDetailsFragment.newInstance(note))
+                            NoteDetailsFragment.newInstance(noteId))
                     .commit();
 
         }

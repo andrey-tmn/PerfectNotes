@@ -7,4 +7,5 @@
     <dimen name="note_titles_in_list_paddingbottom">12dp</dimen>
     <dimen name="note_titles_in_list_textsize">30sp</dimen>
     <dimen name="change_date_button_marginstart">8dp</dimen>
+    <dimen name="note_date_in_details_textsize">20sp</dimen>
 </resources>

@@ -23,7 +23,7 @@ import java.util.List;
 public class NotesListFragment extends Fragment implements NotesListView {
 
     public static final String NOTE_SELECTED = "NOTE_SELECTED";
-    public static final String SELECTED_NOTE_BUNDLE = "SELECTED_NOTE_BUNDLE";
+    public static final String SELECTED_NOTE_ID_BUNDLE = "SELECTED_NOTE_ID_BUNDLE";
 
     private LinearLayout container;
 
@@ -64,13 +64,13 @@ public class NotesListFragment extends Fragment implements NotesListView {
                     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable(SELECTED_NOTE_BUNDLE, note);
+                        bundle.putInt(SELECTED_NOTE_ID_BUNDLE, note.getId());
 
                         getParentFragmentManager()
                                 .setFragmentResult(NOTE_SELECTED, bundle);
 
                     } else {
-                        NoteDetailsActivity.show(requireContext(), note);
+                        NoteDetailsActivity.show(requireContext(), note.getId());
                     }
                 }
             });
@@ -79,7 +79,6 @@ public class NotesListFragment extends Fragment implements NotesListView {
             name.setText(note.getTitle());
 
             container.addView(itemView);
-
         }
     }
 }

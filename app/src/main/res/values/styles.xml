@@ -14,4 +14,8 @@
         <item name="android:textSize">@dimen/note_titles_in_list_textsize</item>
     </style>
 
+    <style name="NoteDateInDetails" parent="NoteTitleInList">
+        <item name="android:textSize">@dimen/note_date_in_details_textsize</item>
+    </style>
+
 </resources>

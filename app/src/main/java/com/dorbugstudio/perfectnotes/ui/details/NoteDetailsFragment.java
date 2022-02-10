@@ -1,10 +1,10 @@
 package com.dorbugstudio.perfectnotes.ui.details;
 
-import android.content.DialogInterface;
+import static com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,29 +14,32 @@ import androidx.fragment.app.FragmentResultListener;
 import com.dorbugstudio.perfectnotes.R;
 import com.dorbugstudio.perfectnotes.domain.Note;
 import com.dorbugstudio.perfectnotes.ui.list.NotesListFragment;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
-
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class NoteDetailsFragment extends Fragment implements
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPositiveButtonClickListener<Long> {
 
-    private static final String ARG_NOTE = "ARG_NOTE";
+    private static final String ARG_NOTE_ID = "ARG_NOTE_ID";
+
     private TextView noteTitleTextView;
     private TextView noteCreatedDateTextView;
     private TextView noteBodyTextView;
+    private boolean showingDatePickerDialog = false;
 
     public NoteDetailsFragment() {
         super(R.layout.fragment_note_details);
     }
 
-    public static NoteDetailsFragment newInstance(Note note) {
+    public static NoteDetailsFragment newInstance(int noteId) {
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_NOTE, note);
+        args.putInt(ARG_NOTE_ID, noteId);
 
         NoteDetailsFragment fragment = new NoteDetailsFragment();
         fragment.setArguments(args);
@@ -52,14 +55,14 @@ public class NoteDetailsFragment extends Fragment implements
         noteBodyTextView = view.findViewById(R.id.note_body);
 
         view.findViewById(R.id.change_date_button)
-                .setOnClickListener(buttonView -> showDatePickerDialog());
+                .setOnClickListener(buttonView -> showDatePickerDialog(null));
 
         getParentFragmentManager()
                 .setFragmentResultListener(NotesListFragment.NOTE_SELECTED, getViewLifecycleOwner(), new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        Note note = (Note) result.getSerializable(NotesListFragment.SELECTED_NOTE_BUNDLE);
-
+                        int noteId = result.getInt(NotesListFragment.SELECTED_NOTE_ID_BUNDLE);
+                        Note note = NotesRepositoryImpl.getInstance().getNoteById(noteId);
                         showNoteDetailsInfo(note);
                     }
                 });
@@ -67,19 +70,35 @@ public class NoteDetailsFragment extends Fragment implements
         showNoteDetailsInfo(getCurrentNote());
     }
 
-    private void showDatePickerDialog() {
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this);
-        datePickerDialog.setTitle(getString(R.string.datepicker_header));
-        datePickerDialog.show(getParentFragmentManager(), "DatePickerDialog");
+    private void showDatePickerDialog(Date date) {
+        if (showingDatePickerDialog) {
+            return;
+        }
+        showingDatePickerDialog = true;
+
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText(R.string.change_date_text);
+        if (date != null) {
+            builder.setSelection(date.getTime());
+        } else {
+            Note note = getCurrentNote();
+            if (note != null) {
+                builder.setSelection(note.getDate().getTime());
+            }
+        }
+        MaterialDatePicker<Long> picker = builder.build();
+        picker.addOnPositiveButtonClickListener(this);
+        picker.addOnDismissListener(dialogInterface -> showingDatePickerDialog = false);
+        picker.show(getParentFragmentManager(), "DatePickerDialog");
     }
 
     private Note getCurrentNote() {
         Note note = null;
 
         Bundle arguments = getArguments();
-        if ((arguments != null) && (arguments.containsKey(ARG_NOTE))) {
-            note = (Note) arguments.getSerializable(ARG_NOTE);
-
+        if ((arguments != null) && (arguments.containsKey(ARG_NOTE_ID))) {
+            int noteId = arguments.getInt(ARG_NOTE_ID);
+            note = NotesRepositoryImpl.getInstance().getNoteById(noteId);
         }
 
         return note;
@@ -91,31 +110,42 @@ public class NoteDetailsFragment extends Fragment implements
         }
 
         noteTitleTextView.setText(note.getTitle());
-        noteCreatedDateTextView.setText(new SimpleDateFormat("dd-MM-yyyy").format(note.getDate()));
+        noteCreatedDateTextView.setText(new SimpleDateFormat("HH:mm dd-MM-yyyy").format(note.getDate()));
         noteBodyTextView.setText(note.getNoteBody());
     }
 
     @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, true);
-        //timePickerDialog.setThemeDark(false);
-        //timePickerDialog.showYearPickerFirst(false);
-        timePickerDialog.setTitle("Time Picker");
+    public void onPositiveButtonClick(Long selectedDate) {
+        Date date = new Date(selectedDate);
+        Date oldDate = getCurrentNote().getDate();
 
-        timePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setInputMode(INPUT_MODE_KEYBOARD)
+                .setHour((int) (oldDate.getTime() % 86400000) / 3600000)
+                .setMinute((int) (oldDate.getTime() % 86400000) / 60000)
+                .build();
+        timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                showDatePickerDialog();
+            public void onClick(View view) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String dateString = new SimpleDateFormat("yyyy-MM-dd").format(selectedDate)
+                        + " " + String.format("%02d:%02d", timePicker.getHour(), timePicker.getMinute());
+                Date dateWithTime;
+                try {
+                    dateWithTime = dateFormat.parse(dateString);
+                } catch (ParseException e) {
+                    dateWithTime = new Date();
+                }
+
+                NotesRepositoryImpl.getInstance()
+                        .changeNoteCreatedDate(getCurrentNote().getId(), dateWithTime);
+                showNoteDetailsInfo(getCurrentNote());
             }
         });
-
-        timePickerDialog.show(getParentFragmentManager(), "TimePickerDialog");
-    }
-
-    @Override
-    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-        Date date = new Date();
-        getCurrentNote().setDate(date);
+        timePicker.addOnCancelListener(view -> showDatePickerDialog(date));
+        timePicker.addOnNegativeButtonClickListener(view -> showDatePickerDialog(date));
+        timePicker.show(getParentFragmentManager(), "TimePickerDialog");
     }
 }
 

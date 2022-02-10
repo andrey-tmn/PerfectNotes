@@ -33,7 +33,7 @@ public class Note implements Serializable {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void changeCreatedDate(Date date) {
         this.date = date;
     }
 }

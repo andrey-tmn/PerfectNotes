@@ -3,10 +3,25 @@ package com.dorbugstudio.perfectnotes.ui.details;
 import com.dorbugstudio.perfectnotes.domain.NotesRepository;
 import com.dorbugstudio.perfectnotes.domain.Note;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class NotesRepositoryImpl implements NotesRepository {
+public class NotesRepositoryImpl implements NotesRepository, Serializable {
+
+    private final Map<Integer, Note> notes;
+
+    public NotesRepositoryImpl() {
+        notes = new HashMap<>();
+        for (int i = 0; i < 5; i++) {
+            int id = i + 1;
+            Note note = new Note(id, "Название заметки " + id, "Текст заметки " + id);
+            notes.put(id, note);
+        }
+    }
 
     private static final NotesRepository INSTANCE = new NotesRepositoryImpl();
 
@@ -16,14 +31,18 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public List<Note> getNotes() {
-        ArrayList<Note> notes = new ArrayList<>();
+        return new ArrayList<>(notes.values());
+    }
 
-        notes.add(new Note(1, "Название заметки 1", "Текст заметки 1"));
-        notes.add(new Note(2, "Название заметки 2", "Текст заметки 2"));
-        notes.add(new Note(3, "Название заметки 3", "Текст заметки 3"));
-        notes.add(new Note(4, "Название заметки 4", "Текст заметки 4"));
-        notes.add(new Note(5, "Название заметки 5", "Текст заметки 5"));
+    @Override
+    public void changeNoteCreatedDate(int id, Date createdDate) {
+        Note note = notes.get(id);
+        if (note != null)
+            note.changeCreatedDate(createdDate);
+    }
 
-        return notes;
+    @Override
+    public Note getNoteById(int id) {
+        return notes.get(id);
     }
 }
