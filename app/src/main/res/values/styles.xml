@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="NoteTitleInList">
+        <item name="android:layout_width">@dimen/zero_value</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/note_titles_in_list_marginbottom</item>
+        <item name="android:background">@color/yellow_opacity_55</item>
+        <item name="android:paddingStart">@dimen/note_titles_in_list_paddinghorizontal</item>
+        <item name="android:paddingEnd">@dimen/note_titles_in_list_paddinghorizontal</item>
+        <item name="android:paddingTop">@dimen/note_titles_in_list_paddingtop</item>
+        <item name="android:paddingBottom">@dimen/note_titles_in_list_paddingbottom</item>
+        <item name="android:textColor">@color/gray_777</item>
+        <item name="android:textSize">@dimen/note_titles_in_list_textsize</item>
+    </style>
+
+    <style name="NoteDateInDetails" parent="NoteTitleInList">
+        <item name="android:textSize">@dimen/note_date_in_details_textsize</item>
+    </style>
+
+</resources>
