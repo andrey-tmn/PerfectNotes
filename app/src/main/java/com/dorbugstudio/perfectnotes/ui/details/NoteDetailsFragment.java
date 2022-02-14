@@ -30,7 +30,6 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
     private TextView noteTitleTextView;
     private TextView noteCreatedDateTextView;
     private TextView noteBodyTextView;
-    private boolean showingDatePickerDialog = false;
 
     public NoteDetailsFragment() {
         super(R.layout.fragment_note_details);
@@ -71,10 +70,10 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
     }
 
     private void showDatePickerDialog(Date date) {
-        if (showingDatePickerDialog) {
+        final String datePickerDialogFragmentManagerTag = "DatePickerDialog";
+        if (getParentFragmentManager().findFragmentByTag(datePickerDialogFragmentManagerTag) != null) {
             return;
         }
-        showingDatePickerDialog = true;
 
         MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText(R.string.change_date_text);
@@ -86,10 +85,10 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
                 builder.setSelection(note.getDate().getTime());
             }
         }
+
         MaterialDatePicker<Long> picker = builder.build();
         picker.addOnPositiveButtonClickListener(this);
-        picker.addOnDismissListener(dialogInterface -> showingDatePickerDialog = false);
-        picker.show(getParentFragmentManager(), "DatePickerDialog");
+        picker.show(getParentFragmentManager(), datePickerDialogFragmentManagerTag);
     }
 
     private Note getCurrentNote() {
