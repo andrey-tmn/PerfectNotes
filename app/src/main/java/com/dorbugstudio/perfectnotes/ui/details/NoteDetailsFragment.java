@@ -25,6 +25,7 @@ import java.util.Date;
 
 public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPositiveButtonClickListener<Long> {
 
+    public static final String TAG = "NoteDetailsFragment";
     private static final String ARG_NOTE_ID = "ARG_NOTE_ID";
 
     private TextView noteTitleTextView;
