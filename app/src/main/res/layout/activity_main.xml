@@ -3,6 +3,4 @@
     android:id="@+id/main_activity_container"
     android:name="com.dorbugstudio.perfectnotes.ui.list.NotesListFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</androidx.fragment.app.FragmentContainerView>
+    android:layout_height="match_parent" />

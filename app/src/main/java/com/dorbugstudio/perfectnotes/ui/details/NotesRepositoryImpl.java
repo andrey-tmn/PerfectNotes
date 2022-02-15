@@ -16,7 +16,7 @@ public class NotesRepositoryImpl implements NotesRepository, Serializable {
 
     public NotesRepositoryImpl() {
         notes = new HashMap<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             int id = i + 1;
             Note note = new Note(id, "Название заметки " + id, "Текст заметки " + id);
             notes.put(id, note);

@@ -12,26 +12,11 @@ import com.dorbugstudio.perfectnotes.R;
 import com.dorbugstudio.perfectnotes.ui.details.NoteDetailsFragment;
 import com.dorbugstudio.perfectnotes.ui.list.NotesListFragment;
 
-public class MainActivity extends AppCompatActivity implements FragmentResultListener {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportFragmentManager()
-                .setFragmentResultListener(NotesListFragment.NOTE_SELECTED,
-                        this, this);
-
-        Log.d("TestNPTags", "onCreate");
-    }
-
-    @Override
-    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_activity_container, NoteDetailsFragment.newInstance(1))
-                .addToBackStack("NoteDetailsFragment")
-                .commit();
     }
 }

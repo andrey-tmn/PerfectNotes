@@ -54,6 +54,13 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
         noteCreatedDateTextView = view.findViewById(R.id.note_created_date);
         noteBodyTextView = view.findViewById(R.id.note_body);
 
+        Note currentNote = getCurrentNote();
+        showNoteDetailsInfo(currentNote);
+
+        if (currentNote == null) {
+            return;
+        }
+
         view.findViewById(R.id.change_date_button)
                 .setOnClickListener(buttonView -> showDatePickerDialog(null));
 
@@ -67,7 +74,6 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
                     }
                 });
 
-        showNoteDetailsInfo(getCurrentNote());
     }
 
     private void showDatePickerDialog(Date date) {
@@ -98,7 +104,9 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
         Bundle arguments = getArguments();
         if ((arguments != null) && (arguments.containsKey(ARG_NOTE_ID))) {
             int noteId = arguments.getInt(ARG_NOTE_ID);
-            note = NotesRepositoryImpl.getInstance().getNoteById(noteId);
+            if (noteId > 0) {
+                note = NotesRepositoryImpl.getInstance().getNoteById(noteId);
+            }
         }
 
         return note;
@@ -106,6 +114,11 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
 
     private void showNoteDetailsInfo(Note note) {
         if (note == null) {
+
+            noteTitleTextView.setText(getString(R.string.note_title_example));
+            noteCreatedDateTextView.setText(new SimpleDateFormat("HH:mm dd-MM-yyyy").format(new Date()));
+            noteBodyTextView.setText(getString(R.string.note_text_example));
+
             return;
         }
 

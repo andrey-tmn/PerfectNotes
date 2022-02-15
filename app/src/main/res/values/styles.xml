@@ -18,4 +18,19 @@
         <item name="android:textSize">@dimen/note_date_in_details_textsize</item>
     </style>
 
+    <style name="BottomMenuButtons">
+        <item name="android:layout_width">@dimen/bottom_menu_buttons_size</item>
+        <item name="android:layout_height">@dimen/bottom_menu_buttons_size</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">@dimen/zero_value</item>
+        <item name="android:minHeight">@dimen/zero_value</item>
+        <item name="android:padding">@dimen/zero_value</item>
+        <item name="iconGravity">start</item>
+        <item name="iconSize">@dimen/bottom_menu_buttons_size</item>
+        <item name="iconTint">@null</item>
+        <item name="strokeWidth">@dimen/zero_value</item>
+        <item name="android:layout_marginEnd">@dimen/bottom_menu_buttons_marginend</item>
+    </style>
+
 </resources>
