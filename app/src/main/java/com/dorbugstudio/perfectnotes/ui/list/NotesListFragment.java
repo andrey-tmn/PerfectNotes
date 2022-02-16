@@ -3,6 +3,7 @@ package com.dorbugstudio.perfectnotes.ui.list;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -17,9 +18,11 @@ import androidx.fragment.app.FragmentResultListener;
 
 import com.dorbugstudio.perfectnotes.R;
 import com.dorbugstudio.perfectnotes.domain.Note;
+import com.dorbugstudio.perfectnotes.ui.NavigationDrawable;
 import com.dorbugstudio.perfectnotes.ui.details.NoteDetailsFragment;
 import com.dorbugstudio.perfectnotes.ui.details.NotesRepositoryImpl;
 import com.dorbugstudio.perfectnotes.ui.settings.SettingsFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 
@@ -58,9 +61,28 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
                 .setFragmentResultListener(NotesListFragment.NOTE_SELECTED,
                         this, this);
 
-        view.findViewById(R.id.about_button).setOnClickListener(v -> showAbout());
+        MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
 
-        view.findViewById(R.id.settings_button).setOnClickListener(v -> showSettings());
+        if (requireActivity() instanceof NavigationDrawable) {
+            ((NavigationDrawable) requireActivity()).setAppBar(toolbar);
+        }
+
+        toolbar.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_search) {
+                    Toast.makeText(requireContext(), getString(R.string.action_search), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                if (item.getItemId() == R.id.action_sort) {
+                    Toast.makeText(requireContext(), getString(R.string.action_sort), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     private void showSettings() {
