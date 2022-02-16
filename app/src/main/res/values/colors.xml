@@ -10,4 +10,5 @@
     <color name="yellow_opacity_55">#55FFFF00</color>
     <color name="gray_777">#777777</color>
     <color name="note_details_background">#33FF0000</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

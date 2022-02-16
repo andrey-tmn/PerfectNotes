@@ -2,4 +2,9 @@
     <string name="app_name">Perfect Notes</string>
     <string name="change_date_text">Change date</string>
     <string name="datepicker_header">Please set date of note created</string>
+    <string name="settings_button_descr">Settings</string>
+    <string name="about_button_descr">About</string>
+    <string name="settings_title_text">Here is something settings. Your note details will look like (click on this for showing):</string>
+    <string name="note_title_example">Название заметки</string>
+    <string name="note_text_example">Пример основного текста заметки</string>
 </resources>

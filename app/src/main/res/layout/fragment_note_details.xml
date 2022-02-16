@@ -38,7 +38,7 @@
     <TextView
         android:id="@+id/note_body"
         style="@style/NoteTitleInList"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_value"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/title"
         app:layout_constraintStart_toStartOf="@id/title"

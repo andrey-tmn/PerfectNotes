@@ -1,12 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/note_list_container_scroll_wrap"
+        android:layout_width="@dimen/zero_value"
+        android:layout_height="@dimen/zero_value"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:id="@+id/note_list_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom_menu_container"
+        android:layout_width="@dimen/zero_value"
+        android:layout_height="@dimen/bottom_menu_height"
+        android:gravity="end|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_list_container_scroll_wrap">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/about_button"
+            style="@style/BottomMenuButtons"
+            android:contentDescription="@string/about_button_descr"
+            app:icon="@drawable/about_icon" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings_button"
+            style="@style/BottomMenuButtons"
+            android:contentDescription="@string/settings_button_descr"
+            app:icon="@drawable/settings_icon" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
