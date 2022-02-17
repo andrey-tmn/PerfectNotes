@@ -16,4 +16,9 @@
     <string name="action_add_link">Add link</string>
     <string name="open_drawer">Show menu</string>
     <string name="close_drawer">Hide menu</string>
+    <string name="settings_header">Settings</string>
+    <string name="goto_notes">Notes list</string>
+    <string name="author_link">dorbugstudio.com</string>
+    <string name="app_version">v 0.0.1</string>
+    <string name="background_description">Background image</string>
 </resources>

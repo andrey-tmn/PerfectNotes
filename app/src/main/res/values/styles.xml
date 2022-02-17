@@ -33,4 +33,8 @@
         <item name="android:layout_marginEnd">@dimen/bottom_menu_buttons_marginend</item>
     </style>
 
+    <style name="DrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/white</item>
+    </style>
+
 </resources>

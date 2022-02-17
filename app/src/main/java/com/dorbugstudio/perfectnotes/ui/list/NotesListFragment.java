@@ -29,6 +29,7 @@ import java.util.List;
 
 public class NotesListFragment extends Fragment implements NotesListView, FragmentResultListener {
 
+    public static final String TAG = "NotesListFragment";
     public static final String NOTE_SELECTED = "NOTE_SELECTED";
     public static final String SELECTED_NOTE_ID_BUNDLE = "SELECTED_NOTE_ID_BUNDLE";
 
@@ -83,20 +84,6 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
                 return false;
             }
         });
-    }
-
-    private void showSettings() {
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_activity_container,
-                        new SettingsFragment(),
-                        SettingsFragment.TAG)
-                .addToBackStack("SettingsFragment")
-                .commitAllowingStateLoss();
-    }
-
-    private void showAbout() {
-        Toast.makeText(getContext(), getString(R.string.about_button_descr), Toast.LENGTH_SHORT).show();
     }
 
     @Override
