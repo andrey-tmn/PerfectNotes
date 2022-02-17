@@ -2,7 +2,9 @@ package com.dorbugstudio.perfectnotes.ui.list;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,7 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
     public static final String SELECTED_NOTE_ID_BUNDLE = "SELECTED_NOTE_ID_BUNDLE";
 
     private LinearLayout listContainer;
-
+    private View contextMenuSourceView;
     private NotesListPresenter presenter;
 
     @Override
@@ -88,6 +90,8 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
 
     @Override
     public void showNotes(List<Note> notes) {
+        listContainer.removeAllViews();
+
         for (Note note : notes) {
             View itemView = getLayoutInflater().inflate(R.layout.item_note, listContainer, false);
 
@@ -102,11 +106,39 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
                 }
             });
 
+            itemView.setOnContextClickListener(new View.OnContextClickListener() {
+                @Override
+                public boolean onContextClick(View view) {
+                    presenter.deleteNote(note.getId());
+                    return true;
+                }
+            });
+
             TextView name = itemView.findViewById(R.id.note_title_in_list);
             name.setText(note.getTitle());
 
+            registerForContextMenu(itemView);
+
             listContainer.addView(itemView);
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        contextMenuSourceView = v;
+
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.context_menu_for_note_in_list, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_delete) {
+            contextMenuSourceView.performContextClick();
+            return true;
+        }
+
+        return false;
     }
 
     @Override

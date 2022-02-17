@@ -19,5 +19,10 @@ public class NotesListPresenter {
         List<Note> notes = repository.getNotes();
         view.showNotes(notes);
     }
+
+    public void deleteNote(int id) {
+        repository.deleteNote(id);
+        requestNotes();
+    }
 }
 
