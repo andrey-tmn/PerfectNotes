@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
@@ -25,6 +26,7 @@ import com.dorbugstudio.perfectnotes.ui.details.NoteDetailsFragment;
 import com.dorbugstudio.perfectnotes.ui.details.NotesRepositoryImpl;
 import com.dorbugstudio.perfectnotes.ui.settings.SettingsFragment;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -60,9 +62,11 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
 
         presenter.requestNotes();
 
-        getParentFragmentManager()
-                .setFragmentResultListener(NotesListFragment.NOTE_SELECTED,
-                        this, this);
+        FragmentManager fragmentManager = getParentFragmentManager();
+        fragmentManager.setFragmentResultListener(NoteDeleteDialogFragment.REQUEST_KEY,
+                this, this);
+        fragmentManager.setFragmentResultListener(NotesListFragment.NOTE_SELECTED,
+                this, this);
 
         MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
 
@@ -109,7 +113,7 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
             itemView.setOnContextClickListener(new View.OnContextClickListener() {
                 @Override
                 public boolean onContextClick(View view) {
-                    presenter.deleteNote(note.getId());
+                    deleteNoteButtonClicked(note.getId());
                     return true;
                 }
             });
@@ -121,6 +125,13 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
 
             listContainer.addView(itemView);
         }
+    }
+
+    private void deleteNoteButtonClicked(int noteId) {
+        String title = getString(R.string.note_delete_gialog_title);
+        String message = String.format(getString(R.string.note_delete_gialog_question), presenter.getNoteTitleById(noteId));
+        NoteDeleteDialogFragment.newInstance(title, message, noteId)
+                .show(getParentFragmentManager(), NoteDeleteDialogFragment.TAG);
     }
 
     @Override
@@ -143,15 +154,22 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
 
     @Override
     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-        int noteId = result.getInt(NotesListFragment.SELECTED_NOTE_ID_BUNDLE);
+        if (requestKey == NotesListFragment.NOTE_SELECTED) {
+            int noteId = result.getInt(NotesListFragment.SELECTED_NOTE_ID_BUNDLE);
 
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_activity_container,
-                        NoteDetailsFragment.newInstance(noteId),
-                        NoteDetailsFragment.TAG)
-                .addToBackStack("NoteDetailsFragment")
-                .commitAllowingStateLoss();
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_activity_container,
+                            NoteDetailsFragment.newInstance(noteId),
+                            NoteDetailsFragment.TAG)
+                    .addToBackStack("NoteDetailsFragment")
+                    .commitAllowingStateLoss();
+        } else if (requestKey == NoteDeleteDialogFragment.REQUEST_KEY) {
+            int noteId = result.getInt(NoteDeleteDialogFragment.ARG_NOTE_ID);
+            presenter.deleteNote(noteId);
+
+            Snackbar.make(this.getView(), getString(R.string.note_deleted), Snackbar.LENGTH_SHORT).show();
+        }
     }
 }
 

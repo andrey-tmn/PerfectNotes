@@ -22,4 +22,9 @@
     <string name="app_version">v 0.0.1</string>
     <string name="background_description">Background image</string>
     <string name="action_delete">Delete note</string>
+    <string name="note_delete_gialog_title">Delete note</string>
+    <string name="note_delete_gialog_question">Are you sure want to delete note with title %s?</string>
+    <string name="yes_word">Yes</string>
+    <string name="no_word">No</string>
+    <string name="note_deleted">Note deleted!</string>
 </resources>

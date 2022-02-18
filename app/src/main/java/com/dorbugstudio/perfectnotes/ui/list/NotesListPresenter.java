@@ -20,6 +20,22 @@ public class NotesListPresenter {
         view.showNotes(notes);
     }
 
+    public String getNoteTitleById(int id) {
+        String title = "";
+
+        if (id == 0) {
+            return title;
+        }
+
+        Note note = repository.getNoteById(id);
+
+        if (note == null) {
+            return title;
+        }
+
+        return note.getTitle();
+    }
+
     public void deleteNote(int id) {
         repository.deleteNote(id);
         requestNotes();
