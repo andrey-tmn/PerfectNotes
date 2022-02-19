@@ -55,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawabl
             }
         });
 
-        showMainFragment();
+        if (savedInstanceState == null) {
+            showMainFragment();
+        }
     }
 
     private void showMainFragment() {

@@ -16,8 +16,7 @@ public class NotesListPresenter {
     }
 
     public void requestNotes() {
-        List<Note> notes = repository.getNotes();
-        view.showNotes(notes);
+        view.showNotes(repository.getNotes());
     }
 
     public String getNoteTitleById(int id) {
