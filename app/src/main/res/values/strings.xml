@@ -7,4 +7,19 @@
     <string name="settings_title_text">Here is something settings. Your note details will look like (click on this for showing):</string>
     <string name="note_title_example">Название заметки</string>
     <string name="note_text_example">Пример основного текста заметки</string>
+    <string name="notes_list_title_on_appbar">Notes</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_search">Search</string>
+    <string name="action_share">Share</string>
+    <string name="action_add_img_or_link">Add image or link</string>
+    <string name="action_add_img">Add image</string>
+    <string name="action_add_link">Add link</string>
+    <string name="open_drawer">Show menu</string>
+    <string name="close_drawer">Hide menu</string>
+    <string name="settings_header">Settings</string>
+    <string name="goto_notes">Notes list</string>
+    <string name="author_link">dorbugstudio.com</string>
+    <string name="app_version">v 0.0.1</string>
+    <string name="background_description">Background image</string>
+    <string name="action_delete">Delete note</string>
 </resources>

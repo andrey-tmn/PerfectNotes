@@ -42,6 +42,11 @@ public class NotesRepositoryImpl implements NotesRepository, Serializable {
     }
 
     @Override
+    public void deleteNote(int id) {
+        notes.remove(id);
+    }
+
+    @Override
     public Note getNoteById(int id) {
         return notes.get(id);
     }

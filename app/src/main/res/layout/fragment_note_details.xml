@@ -1,48 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/note_details_background">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/title"
-        style="@style/NoteTitleInList"
-        android:layout_width="@dimen/zero_value"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Moscow" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/note_created_date"
-        style="@style/NoteDateInDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="09:57 11.02.2022" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_details"
+            app:title="@string/note_title_example"
+            app:titleTextColor="@color/white" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/change_date_button"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/zero_value"
-        android:layout_marginStart="@dimen/change_date_button_marginstart"
-        android:text="@string/change_date_text"
-        app:layout_constraintBottom_toBottomOf="@id/note_created_date"
-        app:layout_constraintStart_toEndOf="@id/note_created_date"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/note_body"
-        style="@style/NoteTitleInList"
-        android:layout_width="@dimen/zero_value"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/title"
-        app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/note_created_date"
-        tools:text="Текст заметки" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/note_details_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/note_details_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/title"
+            style="@style/NoteTitleInList"
+            android:layout_width="@dimen/zero_value"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Moscow" />
+
+        <TextView
+            android:id="@+id/note_created_date"
+            style="@style/NoteDateInDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="09:57 11.02.2022" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/change_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/zero_value"
+            android:layout_marginStart="@dimen/change_date_button_marginstart"
+            android:text="@string/change_date_text"
+            app:layout_constraintBottom_toBottomOf="@id/note_created_date"
+            app:layout_constraintStart_toEndOf="@id/note_created_date"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <TextView
+            android:id="@+id/note_body"
+            style="@style/NoteTitleInList"
+            android:layout_width="@dimen/zero_value"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/note_created_date"
+            tools:text="Текст заметки" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

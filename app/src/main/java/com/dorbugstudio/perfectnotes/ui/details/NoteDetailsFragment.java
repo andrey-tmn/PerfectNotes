@@ -3,17 +3,24 @@ package com.dorbugstudio.perfectnotes.ui.details;
 import static com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.dorbugstudio.perfectnotes.R;
 import com.dorbugstudio.perfectnotes.domain.Note;
+import com.dorbugstudio.perfectnotes.ui.NavigationDrawable;
 import com.dorbugstudio.perfectnotes.ui.list.NotesListFragment;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -50,6 +57,8 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
+
         noteTitleTextView = view.findViewById(R.id.title);
         noteCreatedDateTextView = view.findViewById(R.id.note_created_date);
         noteBodyTextView = view.findViewById(R.id.note_body);
@@ -58,8 +67,42 @@ public class NoteDetailsFragment extends Fragment implements MaterialPickerOnPos
         showNoteDetailsInfo(currentNote);
 
         if (currentNote == null) {
+
+            view.findViewById(R.id.appbar_layout).setVisibility(View.INVISIBLE);
+            ((CoordinatorLayout.LayoutParams)
+                    view.findViewById(R.id.note_details_wrap)
+                            .getLayoutParams()).setBehavior(null);
+
             return;
         }
+
+        if (requireActivity() instanceof NavigationDrawable) {
+            ((NavigationDrawable) requireActivity()).setAppBar(toolbar);
+        }
+
+        toolbar.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_share) {
+                    Toast.makeText(requireContext(), getString(R.string.action_share), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                if (item.getItemId() == R.id.action_add_img) {
+                    Toast.makeText(requireContext(), getString(R.string.action_add_img), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                if (item.getItemId() == R.id.action_add_link) {
+                    Toast.makeText(requireContext(), getString(R.string.action_add_link), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        toolbar.setTitle(currentNote.getTitle());
 
         view.findViewById(R.id.change_date_button)
                 .setOnClickListener(buttonView -> showDatePickerDialog(null));
