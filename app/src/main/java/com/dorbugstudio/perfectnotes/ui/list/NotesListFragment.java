@@ -36,6 +36,7 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
     public static final String NOTE_SELECTED = "NOTE_SELECTED";
     public static final String SELECTED_NOTE_ID_BUNDLE = "SELECTED_NOTE_ID_BUNDLE";
 
+    private NotesListAdapter adapter;
     private NotesListPresenter presenter;
     private RecyclerView listRecyclerView;
 
@@ -56,8 +57,13 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        adapter = new NotesListAdapter();
+
         listRecyclerView = view.findViewById(R.id.note_list_container);
         registerForContextMenu(listRecyclerView);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        listRecyclerView.setLayoutManager(layoutManager);
 
         presenter.requestNotes();
 
@@ -93,11 +99,6 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
 
     @Override
     public void showNotes(List<Note> notes) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        listRecyclerView.setLayoutManager(layoutManager);
-
-        NotesListAdapter adapter = new NotesListAdapter();
-
         adapter.setOnNoteClicked(new NotesListAdapter.OnNoteClicked() {
             @Override
             public void onNoteClicked(int noteId) {
@@ -129,12 +130,7 @@ public class NotesListFragment extends Fragment implements NotesListView, Fragme
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        RecyclerView.Adapter<?> adapter = listRecyclerView.getAdapter();
-        if (!(adapter instanceof NotesListAdapter)) {
-            return false;
-        }
-        NotesListAdapter listItem = (NotesListAdapter) adapter;
-        int noteId = listItem.getLongClickNoteId();
+        int noteId = adapter.getLongClickNoteId();
 
         if (item.getItemId() == R.id.action_edit) {
             getParentFragmentManager()
