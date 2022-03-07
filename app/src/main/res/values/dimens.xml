@@ -11,4 +11,11 @@
     <dimen name="bottom_menu_buttons_size">70dp</dimen>
     <dimen name="bottom_menu_buttons_marginend">8dp</dimen>
     <dimen name="bottom_menu_height">100dp</dimen>
+    <dimen name="navigation_drawer_header_paddingstart">105dp</dimen>
+    <dimen name="navigation_drawer_header_paddingtop">30dp</dimen>
+    <dimen name="navigation_drawer_header_title_height">30dp</dimen>
+    <dimen name="navigation_drawer_header_title_textsize">24sp</dimen>
+    <dimen name="navigation_drawer_header_link_textsize">18sp</dimen>
+    <dimen name="navigation_drawer_header_version_textsize">14sp</dimen>
+    <dimen name="navigation_drawer_header_height">140dp</dimen>
 </resources>

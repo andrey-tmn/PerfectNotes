@@ -9,6 +9,8 @@ public interface NotesRepository {
 
     void changeNoteCreatedDate(int id, Date createdDate);
 
+    void deleteNote(int id);
+
     Note getNoteById(int id);
 
 }

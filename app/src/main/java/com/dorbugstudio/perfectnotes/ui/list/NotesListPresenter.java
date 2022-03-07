@@ -16,8 +16,28 @@ public class NotesListPresenter {
     }
 
     public void requestNotes() {
-        List<Note> notes = repository.getNotes();
-        view.showNotes(notes);
+        view.showNotes(repository.getNotes());
+    }
+
+    public String getNoteTitleById(int id) {
+        String title = "";
+
+        if (id == 0) {
+            return title;
+        }
+
+        Note note = repository.getNoteById(id);
+
+        if (note == null) {
+            return title;
+        }
+
+        return note.getTitle();
+    }
+
+    public void deleteNote(int id) {
+        repository.deleteNote(id);
+        requestNotes();
     }
 }
 
